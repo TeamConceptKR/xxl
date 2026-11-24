@@ -1,0 +1,23 @@
+name: Sync upstream
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync main with ivall/xcl
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-Github-Api-Version: 2022-11-28" \
+            repos/TeamConceptKR/xxl/merge-upstream \
+            -f branch=main
